@@ -109,17 +109,18 @@
 
 
   <meta name="description" content="NSOperationQueue 线程同步###前序:  在iOS12.1上出现了一个, 再通知拓展里所有的语音播放功能都实现, 没有声音, 在一个需要实现语音播报的App上, 这个bug是相当致命的. 由此引申出一个解决方案, 就是通过一段固定的音频进行自定义铃声,从而实现语音播报的功能. 但是从中遇到了一个问题, 就是手机在锁屏时, 当有几个推送但是到达手机时, 几个铃声就会造成声音重叠, 完">
+<meta name="keywords" content="iOS,多线程">
 <meta property="og:type" content="article">
-<meta property="og:title" content="耀敬业的博客">
+<meta property="og:title" content="NSOperationQueue 线程同步">
 <meta property="og:url" content="http://yoursite.com/2018/11/19/2018-11-19-NSOperationQueue-线程同步/index.html">
 <meta property="og:site_name" content="耀敬业的博客">
 <meta property="og:description" content="NSOperationQueue 线程同步###前序:  在iOS12.1上出现了一个, 再通知拓展里所有的语音播放功能都实现, 没有声音, 在一个需要实现语音播报的App上, 这个bug是相当致命的. 由此引申出一个解决方案, 就是通过一段固定的音频进行自定义铃声,从而实现语音播报的功能. 但是从中遇到了一个问题, 就是手机在锁屏时, 当有几个推送但是到达手机时, 几个铃声就会造成声音重叠, 完">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://yoursite.com/img/NSOperationQueue/2018-11-19-01.png">
 <meta property="og:image" content="http://yoursite.com/img/NSOperationQueue/2018-11-19-02.png">
-<meta property="og:updated_time" content="2018-11-19T05:44:46.199Z">
+<meta property="og:updated_time" content="2018-11-21T08:38:53.525Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="耀敬业的博客">
+<meta name="twitter:title" content="NSOperationQueue 线程同步">
 <meta name="twitter:description" content="NSOperationQueue 线程同步###前序:  在iOS12.1上出现了一个, 再通知拓展里所有的语音播放功能都实现, 没有声音, 在一个需要实现语音播报的App上, 这个bug是相当致命的. 由此引申出一个解决方案, 就是通过一段固定的音频进行自定义铃声,从而实现语音播报的功能. 但是从中遇到了一个问题, 就是手机在锁屏时, 当有几个推送但是到达手机时, 几个铃声就会造成声音重叠, 完">
 <meta name="twitter:image" content="http://yoursite.com/img/NSOperationQueue/2018-11-19-01.png">
 
@@ -138,7 +139,7 @@
   };
 </script>
 
-  <title> | 耀敬业的博客</title>
+  <title>NSOperationQueue 线程同步 | 耀敬业的博客</title>
   
 
 
@@ -320,7 +321,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">
+          <h1 class="post-title" itemprop="name headline">NSOperationQueue 线程同步
               
             
           </h1>
@@ -345,12 +346,24 @@
                 
               
 
-              <time title="Created: 2018-11-19 11:59:44 / Modified: 13:44:46" itemprop="dateCreated datePublished" datetime="2018-11-19T11:59:44+08:00">2018-11-19</time>
+              <time title="Created: 2018-11-19 00:00:00" itemprop="dateCreated datePublished" datetime="2018-11-19T00:00:00+08:00">2018-11-19</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2018-11-21 16:38:53" itemprop="dateModified" datetime="2018-11-21T16:38:53+08:00">2018-11-21</time>
               
             
           </span>
@@ -426,6 +439,14 @@
     
 
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
+          
+            <a href="/tags/多线程/" rel="tag"># 多线程</a>
+          
+        </div>
       
 
       
@@ -549,7 +570,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">8</span>
+                      
+                    
+                    <span class="site-state-item-count">9</span>
                     <span class="site-state-item-name">tags</span>
                   
                 </div>
