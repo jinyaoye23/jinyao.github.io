@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>耀敬业的博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="NSOperationQueue 线程同步###前序:  在iOS12.1上出现了一个, 再通知拓展里所有的语音播放功能都实现, 没有声音, 在一个需要实现语音播报的App上, 这个bug是相当致命的. 由此引申出一个解决方案, 就是通过一段固定的音频进行自定义铃声,从而实现语音播报的功能. 但是从中遇到了一个问题, 就是手机在锁屏时, 当有几个推送但是到达手机时, 几个铃声就会造成声音重叠, 完">
+<meta property="og:type" content="article">
+<meta property="og:title" content="耀敬业的博客">
+<meta property="og:url" content="http://yoursite.com/2018/11/19/2018-11-19-NSOperationQueue-线程同步/index.html">
+<meta property="og:site_name" content="耀敬业的博客">
+<meta property="og:description" content="NSOperationQueue 线程同步###前序:  在iOS12.1上出现了一个, 再通知拓展里所有的语音播放功能都实现, 没有声音, 在一个需要实现语音播报的App上, 这个bug是相当致命的. 由此引申出一个解决方案, 就是通过一段固定的音频进行自定义铃声,从而实现语音播报的功能. 但是从中遇到了一个问题, 就是手机在锁屏时, 当有几个推送但是到达手机时, 几个铃声就会造成声音重叠, 完">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/img/NSOperationQueue/2018-11-19-01.png">
+<meta property="og:image" content="http://yoursite.com/img/NSOperationQueue/2018-11-19-02.png">
+<meta property="og:updated_time" content="2018-11-19T05:44:46.199Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="耀敬业的博客">
+<meta name="twitter:description" content="NSOperationQueue 线程同步###前序:  在iOS12.1上出现了一个, 再通知拓展里所有的语音播放功能都实现, 没有声音, 在一个需要实现语音播报的App上, 这个bug是相当致命的. 由此引申出一个解决方案, 就是通过一段固定的音频进行自定义铃声,从而实现语音播报的功能. 但是从中遇到了一个问题, 就是手机在锁屏时, 当有几个推送但是到达手机时, 几个铃声就会造成声音重叠, 完">
+<meta name="twitter:image" content="http://yoursite.com/img/NSOperationQueue/2018-11-19-01.png">
+  
+    <link rel="alternate" href="/atom.xml" title="耀敬业的博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">耀敬业的博客</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-2018-11-19-NSOperationQueue-线程同步" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/11/19/2018-11-19-NSOperationQueue-线程同步/" class="article-date">
+  <time datetime="2018-11-19T03:59:44.782Z" itemprop="datePublished">2018-11-19</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="NSOperationQueue-线程同步"><a href="#NSOperationQueue-线程同步" class="headerlink" title="NSOperationQueue 线程同步"></a>NSOperationQueue 线程同步</h1><p>###前序:</p>
+<blockquote>
+<p>在iOS12.1上出现了一个, 再通知拓展里所有的语音播放功能都实现, 没有声音, 在一个需要实现语音播报的App上, 这个bug是相当致命的. 由此引申出一个解决方案, 就是通过一段固定的音频进行自定义铃声,从而实现语音播报的功能. 但是从中遇到了一个问题, 就是手机在锁屏时, 当有几个推送但是到达手机时, 几个铃声就会造成声音重叠, 完全听不出有几条推送信息. 对于收款语音播报功能来说, 这不是很友好的. 于是, 有什么方法可以操纵这个铃声播报, 让一条铃声播完再播另一条铃声的吗? 方法当然是有的, 那就是<strong>队列</strong>.</p>
+</blockquote>
+<p>在操纵队列上, 选择了NSOperationQueue、NSOperation, 它们是GCD更高一层的封装.</p>
+<h3 id="NSOperation、NSOperationQueue使用步骤"><a href="#NSOperation、NSOperationQueue使用步骤" class="headerlink" title="NSOperation、NSOperationQueue使用步骤"></a>NSOperation、NSOperationQueue使用步骤</h3><ul>
+<li>创建Opertion: 先将需要执行的操作封装到一个NSOperation对象中</li>
+<li>创建Queue: 创建NSOperationQueue对象</li>
+<li>将操作对象添加到队列中:将NSOperation对象添加到NSOperationQueue对象中</li>
+<li>系统会自动将NSOperationQueue中NSOperation取出, 在新线程中执行</li>
+</ul>
+<h4 id="创建Operation"><a href="#创建Operation" class="headerlink" title="创建Operation"></a>创建Operation</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">- (NSOperation *)customOperation:(NSString *)content &#123;</span><br><span class="line">    NSBlockOperation *operation = [NSBlockOperation blockOperationWithBlock:^&#123;</span><br><span class="line">        NSString *soundFilePath = [[NSBundle mainBundle] pathForResource:@&quot;sound&quot; ofType:@&quot;wav&quot;]; //音频文件路径</span><br><span class="line">        NSURL *soundURL = [NSURL fileURLWithPath:soundFilePath];</span><br><span class="line">        SystemSoundID soundID;</span><br><span class="line">        AudioServicesCreateSystemSoundID((__bridge CFURLRef)soundURL, &amp;soundID);</span><br><span class="line">        AudioServicesPlaySystemSound(soundID);</span><br><span class="line">        NSLog(@&quot;%@&quot;, content);</span><br><span class="line">        AudioServicesPlaySystemSoundWithCompletion(soundID, ^&#123;</span><br><span class="line">            NSLog(@&quot;%@:finish&quot;, content);</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;];</span><br><span class="line">    </span><br><span class="line">    return operation;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="创建NSOperationQueue"><a href="#创建NSOperationQueue" class="headerlink" title="创建NSOperationQueue"></a>创建NSOperationQueue</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">-(NSOperationQueue *)aQueue&#123;</span><br><span class="line">    if (_aQueue == nil) &#123;</span><br><span class="line">        _aQueue = [[NSOperationQueue alloc]init];</span><br><span class="line">        [_aQueue setMaxConcurrentOperationCount:1]; //设置最大并发线程为1</span><br><span class="line">    &#125;</span><br><span class="line">    return _aQueue;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="添加操作到队列"><a href="#添加操作到队列" class="headerlink" title="添加操作到队列"></a>添加操作到队列</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">NSOperation *op1 = [self customOperation:@&quot;佰兹壹到账一笔:1&quot;];</span><br><span class="line">NSOperation *op2 = [self customOperation:@&quot;佰兹壹到账一笔:2&quot;];</span><br><span class="line">NSOperation *op3 = [self customOperation:@&quot;佰兹壹到账一笔:3&quot;];</span><br><span class="line">NSOperation *op4 = [self customOperation:@&quot;佰兹壹到账一笔:4&quot;];</span><br><span class="line">[op4 addDependency:op3]; //添加依赖</span><br><span class="line">[op3 addDependency:op2];</span><br><span class="line">[op2 addDependency:op1];</span><br><span class="line">[self.aQueue addOperation:op1];</span><br><span class="line">[self.aQueue addOperation:op2];</span><br><span class="line">[self.aQueue addOperation:op3];</span><br><span class="line">[self.aQueue addOperation:op4];</span><br></pre></td></tr></table></figure>
+<h4 id="结果如下"><a href="#结果如下" class="headerlink" title="结果如下:"></a>结果如下:</h4><p><img src="/img/NSOperationQueue/2018-11-19-01.png" alt=""></p>
+<p>由上面的结果我们可以看出执行的先后顺序是op1、op2、op3、ope4, 没有达到我们想要的效果, 我们是想一条播报完成再播报下一条的, 因为这是一个串行队列, 我们试下给队列设置<strong>暂停和恢复</strong>操作. </p>
+<h4 id="创建Operation时添加队列暂停和恢复"><a href="#创建Operation时添加队列暂停和恢复" class="headerlink" title="创建Operation时添加队列暂停和恢复"></a>创建Operation时添加队列暂停和恢复</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">- (NSOperation *)customOperation:(NSString *)content &#123;</span><br><span class="line">    NSBlockOperation *operation = [NSBlockOperation blockOperationWithBlock:^&#123;</span><br><span class="line">        [self.aQueue setSuspended:YES];  //暂停队列</span><br><span class="line">        NSString *soundFilePath = [[NSBundle mainBundle] pathForResource:@&quot;sound&quot; ofType:@&quot;wav&quot;]; //音频文件路径</span><br><span class="line">        NSURL *soundURL = [NSURL fileURLWithPath:soundFilePath];</span><br><span class="line">        SystemSoundID soundID;</span><br><span class="line">        AudioServicesCreateSystemSoundID((__bridge CFURLRef)soundURL, &amp;soundID);</span><br><span class="line">        AudioServicesPlaySystemSound(soundID);</span><br><span class="line">        NSLog(@&quot;%@&quot;, content);</span><br><span class="line">        AudioServicesPlaySystemSoundWithCompletion(soundID, ^&#123;</span><br><span class="line">            [self.aQueue setSuspended:NO]; //恢复队列</span><br><span class="line">            NSLog(@&quot;%@:finish&quot;, content);</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;];</span><br><span class="line">    </span><br><span class="line">    return operation;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>最总结果</strong></p>
+<p><img src="/img/NSOperationQueue/2018-11-19-02.png" alt=""></p>
+<p>从上面结果可以看出, 这次已经可以实现我们想要的效果了, 播完一条再播下一条.</p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="https://blog.csdn.net/spicyshrimp/article/details/70845822" target="_blank" rel="noopener">iOS简单优雅的实现复杂情况下的串行需求(各种锁、GCD 、NSOperationQueue…)
+</a><br><a href="https://www.jianshu.com/p/4b1d77054b35" target="_blank" rel="noopener">iOS 多线程：『NSOperation、NSOperationQueue』详尽总结
+</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/11/19/2018-11-19-NSOperationQueue-线程同步/" data-id="cjoquocoh000gij44qrn62prl" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/11/21/hello-world/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Hello World
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/11/05/iOS-自定义转场效果/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title"></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/加密/">加密</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/哈希/">哈希</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/字典/">字典</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/底层/">底层</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据结构/">数据结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/笔记/">笔记</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/算法/">算法</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/iOS/" style="font-size: 20px;">iOS</a> <a href="/tags/加密/" style="font-size: 10px;">加密</a> <a href="/tags/哈希/" style="font-size: 10px;">哈希</a> <a href="/tags/字典/" style="font-size: 10px;">字典</a> <a href="/tags/底层/" style="font-size: 15px;">底层</a> <a href="/tags/数据结构/" style="font-size: 10px;">数据结构</a> <a href="/tags/笔记/" style="font-size: 20px;">笔记</a> <a href="/tags/算法/" style="font-size: 15px;">算法</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/11/21/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2018/11/19/2018-11-19-NSOperationQueue-线程同步/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2018/11/05/iOS-自定义转场效果/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2018/10/10/2018-10-10-iOS之图片缓存/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2018/09/19/2018-09-18-iOS性能优化/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 耀敬业<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

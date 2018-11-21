@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>金钱数值精度失真及解决方案 | 耀敬业的博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="金钱数值精度失真及解决方案1.问题所在在进行金钱运算时, 如:加、减、比较大小等运算时, 如果进行运算的两个数是CGFloat浮点型时, 如两个数都为1.20 和 1.20, 可能前一个在比较的时候就会变为1.2000000001 或者为 1.199999999, 当进行比较的时候 失真的1.20变为1.199999999与1.20比较时就会导致解决出错.注入此类的问题, 会导致金钱结算出现错误.">
+<meta name="keywords" content="iOS,笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="金钱数值精度失真及解决方案">
+<meta property="og:url" content="http://yoursite.com/2018/08/23/2018-08-23-金钱精度失真问题及解决/index.html">
+<meta property="og:site_name" content="耀敬业的博客">
+<meta property="og:description" content="金钱数值精度失真及解决方案1.问题所在在进行金钱运算时, 如:加、减、比较大小等运算时, 如果进行运算的两个数是CGFloat浮点型时, 如两个数都为1.20 和 1.20, 可能前一个在比较的时候就会变为1.2000000001 或者为 1.199999999, 当进行比较的时候 失真的1.20变为1.199999999与1.20比较时就会导致解决出错.注入此类的问题, 会导致金钱结算出现错误.">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/img/数值精度/2018-08-23-01.png">
+<meta property="og:image" content="http://yoursite.com/img/数值精度/2018-08-23-02.png">
+<meta property="og:image" content="http://yoursite.com/img/数值精度/2018-08-23-04.png">
+<meta property="og:updated_time" content="2018-08-23T03:57:42.204Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="金钱数值精度失真及解决方案">
+<meta name="twitter:description" content="金钱数值精度失真及解决方案1.问题所在在进行金钱运算时, 如:加、减、比较大小等运算时, 如果进行运算的两个数是CGFloat浮点型时, 如两个数都为1.20 和 1.20, 可能前一个在比较的时候就会变为1.2000000001 或者为 1.199999999, 当进行比较的时候 失真的1.20变为1.199999999与1.20比较时就会导致解决出错.注入此类的问题, 会导致金钱结算出现错误.">
+<meta name="twitter:image" content="http://yoursite.com/img/数值精度/2018-08-23-01.png">
+  
+    <link rel="alternate" href="/atom.xml" title="耀敬业的博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">耀敬业的博客</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-2018-08-23-金钱精度失真问题及解决" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/08/23/2018-08-23-金钱精度失真问题及解决/" class="article-date">
+  <time datetime="2018-08-22T16:00:00.000Z" itemprop="datePublished">2018-08-23</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      金钱数值精度失真及解决方案
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="金钱数值精度失真及解决方案"><a href="#金钱数值精度失真及解决方案" class="headerlink" title="金钱数值精度失真及解决方案"></a>金钱数值精度失真及解决方案</h1><h2 id="1-问题所在"><a href="#1-问题所在" class="headerlink" title="1.问题所在"></a>1.问题所在</h2><p>在进行金钱运算时, 如:加、减、比较大小等运算时, 如果进行运算的两个数是CGFloat浮点型时, 如两个数都为1.20 和 1.20, 可能前一个在比较的时候就会变为1.2000000001 或者为 1.199999999, 当进行比较的时候 失真的1.20变为1.199999999与1.20比较时就会导致解决出错.注入此类的问题, 会导致金钱结算出现错误.</p>
+<p>例1:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">CGFloat c = 0.02;</span><br><span class="line">   CGFloat a = 1.20 * 3 + c;</span><br><span class="line">   CGFloat b = 3.62;</span><br><span class="line">   </span><br><span class="line">   if (a &gt; b) &#123;</span><br><span class="line">       NSLog(@&quot;a &gt; b&quot;);</span><br><span class="line">   &#125;else if (a &lt; b)&#123;</span><br><span class="line">       NSLog(@&quot;b &gt; a&quot;);</span><br><span class="line">   &#125;else if (a == b)&#123;</span><br><span class="line">       NSLog(@&quot;a == b&quot;);</span><br><span class="line">   &#125;else&#123;</span><br><span class="line">       NSLog(@&quot;error&quot;);</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>结果如下:</p>
+<p><img src="/img/数值精度/2018-08-23-01.png" alt="1"></p>
+<p><img src="/img/数值精度/2018-08-23-02.png" alt="2"></p>
+<p>很明显 a 经过运算后已经失真为3.6199999999999997, b失真为3.6200000000000001, a 与 b 比较为 b&gt;a, 这个结果并不是我们想要的结果, 我们期待的结果是 a==b, 那么我们要怎么才能解决这个问题呢?</p>
+<h2 id="2-方案"><a href="#2-方案" class="headerlink" title="2.方案"></a>2.方案</h2><p>为了解决浮点型数据失真的问题, 苹果给出的NSDecimalNumber类可以解决这个问题:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">//初始化 NSDecimalNumber</span><br><span class="line">+ (NSDecimalNumber *)decimalNumberWithString:(nullable NSString *)numberValue;</span><br><span class="line"></span><br><span class="line">//加分运算</span><br><span class="line">- (NSDecimalNumber *)decimalNumberByAdding:(NSDecimalNumber *)decimalNumber;</span><br><span class="line"></span><br><span class="line">//减法运算</span><br><span class="line">- (NSDecimalNumber *)decimalNumberBySubtracting:(NSDecimalNumber *)decimalNumber;</span><br><span class="line"></span><br><span class="line">//乘法运算</span><br><span class="line">- (NSDecimalNumber *)decimalNumberByMultiplyingBy:(NSDecimalNumber *)decimalNumber;</span><br><span class="line"></span><br><span class="line">//除法运算</span><br><span class="line">- (NSDecimalNumber *)decimalNumberByDividingBy:(NSDecimalNumber *)decimalNumber;</span><br><span class="line"></span><br><span class="line">//比较</span><br><span class="line">- (NSComparisonResult)compare:(NSNumber *)decimalNumber;</span><br></pre></td></tr></table></figure>
+<p>例2:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">CGFloat e = 1.20;</span><br><span class="line">  CGFloat d = 3.0;</span><br><span class="line">  CGFloat c = 0.02;</span><br><span class="line">  CGFloat a = e * d + c;</span><br><span class="line">  CGFloat b = 3.62;</span><br><span class="line">  </span><br><span class="line">  NSDecimalNumber *cN = [NSDecimalNumber decimalNumberWithString:[NSString stringWithFormat:@&quot;%0.2f&quot;, c]];</span><br><span class="line">  NSDecimalNumber *dN = [NSDecimalNumber decimalNumberWithString:@&quot;3.0&quot;];</span><br><span class="line">  NSDecimalNumber *eN = [NSDecimalNumber decimalNumberWithString:@&quot;1.20&quot;];</span><br><span class="line">  NSDecimalNumber *aN = [eN decimalNumberByMultiplyingBy:dN];</span><br><span class="line">  aN = [aN decimalNumberByAdding:cN];</span><br><span class="line">  NSDecimalNumber *bN = [NSDecimalNumber decimalNumberWithString:[NSString stringWithFormat:@&quot;%0.2f&quot;, b]];</span><br><span class="line">  </span><br><span class="line">  if ([aN compare:bN] == NSOrderedDescending) &#123;</span><br><span class="line">      NSLog(@&quot;a &gt; b&quot;);</span><br><span class="line">  &#125;else if ([aN compare:bN] == NSOrderedAscending)&#123;</span><br><span class="line">      NSLog(@&quot;b &gt; a&quot;);</span><br><span class="line">  &#125;else if ([aN compare:bN] == NSOrderedSame)&#123;</span><br><span class="line">      NSLog(@&quot;a == b&quot;);</span><br><span class="line">  &#125;else&#123;</span><br><span class="line">      NSLog(@&quot;error&quot;);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>结果如下:</p>
+<p><img src="/img/数值精度/2018-08-23-04.png" alt=""></p>
+<p>从上面的结果我们可以看出运用NSDecimalNumber得出的aN 和 bN确实解决了数值精度的问题.</p>
+<h2 id="附"><a href="#附" class="headerlink" title="附:"></a>附:</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- (NSComparisonResult)compare:(NSNumber *)decimalNumber;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">typedef NS_ENUM(NSInteger, NSComparisonResult) &#123;NSOrderedAscending = -1L, NSOrderedSame, NSOrderedDescending&#125;;</span><br></pre></td></tr></table></figure>
+<p>比较的结果有三种情况:</p>
+<blockquote>
+<ol>
+<li>NSOrderedAscending(升序)</li>
+<li>NSOrderedSame(相等)</li>
+<li>NSOrderedDescending(降序)</li>
+</ol>
+</blockquote>
+<p>NSOrderedAscending: 升序, 右边的数值比左边的大为升序<br>NSOrderedSame: 相等, 左右两边的数值一样大<br>NSOrderedDescending: 降序, 右边数值比左边的小为降序</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/08/23/2018-08-23-金钱精度失真问题及解决/" data-id="cjoquocnz0001ij44zij7efo2" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/笔记/">笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/08/24/2018-08-24-算法之常用数据结构/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          算法之常用数据结构
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/03/23/2018-03-23-苹果官方文档阅读入门/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">苹果官方文档阅读</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/加密/">加密</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/哈希/">哈希</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/字典/">字典</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/底层/">底层</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据结构/">数据结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/笔记/">笔记</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/算法/">算法</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/iOS/" style="font-size: 20px;">iOS</a> <a href="/tags/加密/" style="font-size: 10px;">加密</a> <a href="/tags/哈希/" style="font-size: 10px;">哈希</a> <a href="/tags/字典/" style="font-size: 10px;">字典</a> <a href="/tags/底层/" style="font-size: 15px;">底层</a> <a href="/tags/数据结构/" style="font-size: 10px;">数据结构</a> <a href="/tags/笔记/" style="font-size: 20px;">笔记</a> <a href="/tags/算法/" style="font-size: 15px;">算法</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/11/21/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2018/11/19/2018-11-19-NSOperationQueue-线程同步/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2018/11/05/iOS-自定义转场效果/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2018/10/10/2018-10-10-iOS之图片缓存/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2018/09/19/2018-09-18-iOS性能优化/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 耀敬业<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

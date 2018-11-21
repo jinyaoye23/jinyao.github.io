@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>开发笔记 | 耀敬业的博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="开发笔记修改hosts文件路径：/ private / etc / 命令行操作：sudo vi /etc/hosts 打开host文件修改 1.UILabel、UIButton文字显示不全时，省略号显示位置 abel.lineBreakMode = NSLineBreakByCharWrapping;以字符为显示单位显示，后面部分省略不显示。  label.lineBreakMode = NSLi">
+<meta name="keywords" content="iOS,笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="开发笔记">
+<meta property="og:url" content="http://yoursite.com/2017/01/06/2018-03-23-iOS开发笔记/index.html">
+<meta property="og:site_name" content="耀敬业的博客">
+<meta property="og:description" content="开发笔记修改hosts文件路径：/ private / etc / 命令行操作：sudo vi /etc/hosts 打开host文件修改 1.UILabel、UIButton文字显示不全时，省略号显示位置 abel.lineBreakMode = NSLineBreakByCharWrapping;以字符为显示单位显示，后面部分省略不显示。  label.lineBreakMode = NSLi">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-08-22T03:37:59.546Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="开发笔记">
+<meta name="twitter:description" content="开发笔记修改hosts文件路径：/ private / etc / 命令行操作：sudo vi /etc/hosts 打开host文件修改 1.UILabel、UIButton文字显示不全时，省略号显示位置 abel.lineBreakMode = NSLineBreakByCharWrapping;以字符为显示单位显示，后面部分省略不显示。  label.lineBreakMode = NSLi">
+  
+    <link rel="alternate" href="/atom.xml" title="耀敬业的博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">耀敬业的博客</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-2018-03-23-iOS开发笔记" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/01/06/2018-03-23-iOS开发笔记/" class="article-date">
+  <time datetime="2017-01-05T16:00:00.000Z" itemprop="datePublished">2017-01-06</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      开发笔记
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="开发笔记"><a href="#开发笔记" class="headerlink" title="开发笔记"></a>开发笔记</h2><h3 id="修改hosts文件"><a href="#修改hosts文件" class="headerlink" title="修改hosts文件"></a>修改hosts文件</h3><p><strong>路径：/ private / etc /</strong></p>
+<p><strong>命令行操作：<br>sudo vi /etc/hosts 打开host文件修改</strong></p>
+<h3 id="1-UILabel、UIButton文字显示不全时，省略号显示位置"><a href="#1-UILabel、UIButton文字显示不全时，省略号显示位置" class="headerlink" title="1.UILabel、UIButton文字显示不全时，省略号显示位置"></a>1.UILabel、UIButton文字显示不全时，省略号显示位置</h3><pre>
+abel.lineBreakMode = NSLineBreakByCharWrapping;以字符为显示单位显示，后面部分省略不显示。
+
+label.lineBreakMode = NSLineBreakByClipping;剪切与文本宽度相同的内容长度，后半部分被删除。
+label.lineBreakMode = NSLineBreakByTruncatingHead;前面部分文字以……方式省略，显示尾部文字内容。
+label.lineBreakMode = NSLineBreakByTruncatingMiddle;中间的内容以……方式省略，显示头尾的文字内容。
+label.lineBreakMode = NSLineBreakByTruncatingTail;结尾部分的内容以……方式省略，显示头的文字内容。
+label.lineBreakMode = NSLineBreakByWordWrapping;以单词为显示单位显示，后面部分省略不显示。
+</pre>
+
+<h3 id="2-点击事件冲突"><a href="#2-点击事件冲突" class="headerlink" title="2.点击事件冲突"></a>2.点击事件冲突</h3><pre>
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
+    if ([NSStringFromClass([touch.view class]) isEqualToString:@"UITableViewCellContentView"]) {
+        return NO;
+    }else {
+        return YES;
+    }
+}
+
+</pre>
+
+<h3 id="3-单元测试断言及解析"><a href="#3-单元测试断言及解析" class="headerlink" title="3.单元测试断言及解析"></a>3.单元测试断言及解析</h3><pre>
+XCTFail(format…) 生成一个失败的测试； 
+XCTAssertNil(a1, format...)为空判断，a1为空时通过，反之不通过；
+XCTAssertNotNil(a1, format…)不为空判断，a1不为空时通过，反之不通过；
+XCTAssert(expression, format...)当expression求值为TRUE时通过；
+XCTAssertTrue(expression, format...)当expression求值为TRUE时通过；
+XCTAssertFalse(expression, format...)当expression求值为False时通过；
+XCTAssertEqualObjects(a1, a2, format...)判断相等，[a1 isEqual:a2]值为TRUE时通过，其中一个不为空时，不通过；
+XCTAssertNotEqualObjects(a1, a2, format...)判断不等，[a1 isEqual:a2]值为False时通过；
+XCTAssertEqual(a1, a2, format...)判断相等（当a1和a2是 C语言标量、结构体或联合体时使用, 判断的是变量的地址，如果地址相同则返回TRUE，否则返回NO）；
+XCTAssertNotEqual(a1, a2, format...)判断不等（当a1和a2是 C语言标量、结构体或联合体时使用）；
+XCTAssertEqualWithAccuracy(a1, a2, accuracy, format...)判断相等，（double或float类型）提供一个误差范围，当在误差范围（+/-accuracy）以内相等时通过测试；
+XCTAssertNotEqualWithAccuracy(a1, a2, accuracy, format...) 判断不等，（double或float类型）提供一个误差范围，当在误差范围以内不等时通过测试；
+XCTAssertThrows(expression, format...)异常测试，当expression发生异常时通过；反之不通过；（很变态） XCTAssertThrowsSpecific(expression, specificException, format...) 异常测试，当expression发生specificException异常时通过；反之发生其他异常或不发生异常均不通过；
+XCTAssertThrowsSpecificNamed(expression, specificException, exception_name, format...)异常测试，当expression发生具体异常、具体异常名称的异常时通过测试，反之不通过；
+XCTAssertNoThrow(expression, format…)异常测试，当expression没有发生异常时通过测试；
+XCTAssertNoThrowSpecific(expression, specificException, format...)异常测试，当expression没有发生具体异常、具体异常名称的异常时通过测试，反之不通过；
+XCTAssertNoThrowSpecificNamed(expression, specificException, exception_name, format...)异常测试，当expression没有发生具体异常、具体异常名称的异常时通过测试，反之不通过
+
+作者：登低自高
+链接：http://www.jianshu.com/p/009844a0b9ed
+來源：简书
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+</pre>
+
+<h3 id="4-如何解决cell上有textfieldh和其他可点击控价的点击事件冲突"><a href="#4-如何解决cell上有textfieldh和其他可点击控价的点击事件冲突" class="headerlink" title="4.如何解决cell上有textfieldh和其他可点击控价的点击事件冲突"></a>4.如何解决cell上有textfieldh和其他可点击控价的点击事件冲突</h3><p><strong>冲突有三个：</strong></p>
+<ul>
+<li>1.cell的点击事件；</li>
+<li>2.textfield的店家事件</li>
+<li>3.其他控件的点击事件</li>
+</ul>
+<p><a href="http://203.81.21.2:8888/getSupplyInfo.php?page=2&amp;pagesize=10&amp;industry=1458&amp;commodity=1&amp;twoCommodity=320&amp;SuppCode=2102" target="_blank" rel="noopener">http://203.81.21.2:8888/getSupplyInfo.php?page=2&amp;pagesize=10&amp;industry=1458&amp;commodity=1&amp;twoCommodity=320&amp;SuppCode=2102</a></p>
+<p><a href="http://203.81.21.2:8888/getSupplyList.php?&amp;custid=15814555032" target="_blank" rel="noopener">http://203.81.21.2:8888/getSupplyList.php?&amp;custid=15814555032</a></p>
+<p><a href="http://203.81.21.2:8888/pubSupply.php?InfoTitle=供应测试32&amp;ProductName=坯料&amp;industry=1458&amp;commodity=1&amp;twoCommodity=320&amp;Address=广东省广州市荔湾区&amp;ProductPrice=" target="_blank" rel="noopener">http://203.81.21.2:8888/pubSupply.php?InfoTitle=供应测试32&amp;ProductName=坯料&amp;industry=1458&amp;commodity=1&amp;twoCommodity=320&amp;Address=广东省广州市荔湾区&amp;ProductPrice=</a> &amp;ProductSpec=12&amp;SupplyAmount=12&amp;ProductUnit=吨&amp;Manufacturer=宝钢&amp;CompName=中华商务网&amp;ProductKeyword=坯料&amp;SupplyEndDate=2017-07-20&amp;ProuctDetails=描述测试&amp;suppCode=2102&amp;custid=15814555032&amp;token=15814555032412c3ae22008a92eeaaa82a0bac88807tsTlrdXpMyR</p>
+<h2 id="2017-11-3"><a href="#2017-11-3" class="headerlink" title="2017-11-3"></a>2017-11-3</h2><h3 id="1-给view添加阴影效果"><a href="#1-给view添加阴影效果" class="headerlink" title="1.给view添加阴影效果"></a>1.给view添加阴影效果</h3><pre>
+    //设置阴影的颜色
+    _knobView.layer.shadowColor = [UIColor darkGrayColor].CGColor;
+    //设置阴影偏移，X向右偏移2，Y不变
+    _knobView.layer.shadowOffset = CGSizeMake(2, 0);
+    //设置阴影的透明度
+    _knobView.layer.shadowOpacity = 0.4;
+    //设置阴影的半径
+    _knobView.layer.shadowRadius = 0.5;
+</pre>
+
+<h2 id="2017-11-6"><a href="#2017-11-6" class="headerlink" title="2017-11-6"></a>2017-11-6</h2><h3 id="颜色渐变"><a href="#颜色渐变" class="headerlink" title="颜色渐变"></a>颜色渐变</h3><p>[参考]（<a href="http://www.jianshu.com/p/3e0e25fd9b85）" target="_blank" rel="noopener">http://www.jianshu.com/p/3e0e25fd9b85）</a></p>
+<pre>
+ CAGradientLayer *gradientLayer = [CAGradientLayer layer];
+    gradientLayer.colors = @[(__bridge id)[self stringToColor:@"#16a9b3"].CGColor, (__bridge id)[self stringToColor:@"#126ac4"].CGColor];
+    gradientLayer.locations = @[@0.0, @1.0];
+    gradientLayer.startPoint = CGPointMake(0, 0);
+    gradientLayer.endPoint = CGPointMake(0, 1.0);
+    gradientLayer.frame = self.view.bounds;
+    [self.view addSublayer:gradientLayer];
+</pre>
+
+
+<ul>
+<li>1.colors 渐变的颜色</li>
+<li>2.locations 渐变颜色的分割点</li>
+<li>3.startPoint&amp;endPoint 颜色渐变的方向，范围在(0,0)与(1.0,1.0)之间，如(0,0)(1.0,0)代表水平方向渐变,(0,0)(0,1.0)代表竖直方向渐变</li>
+</ul>
+<h2 id="2017-12-7"><a href="#2017-12-7" class="headerlink" title="2017-12-7"></a>2017-12-7</h2><h3 id="常用宏"><a href="#常用宏" class="headerlink" title="常用宏"></a>常用宏</h3><pre>
+//状态栏高度
+#define STATUS_BAR_HEIGHT 20
+//NavBar高度
+#define NAVIGATION_BAR_HEIGHT 44
+//状态栏 ＋ 导航栏 高度
+#define STATUS_AND_NAVIGATION_HEIGHT  ((STATUS_BAR_HEIGHT) + (NAVIGATION_BAR_HEIGHT))
+
+//屏幕 rect
+#define SCREEN_RECT ([UIScreen mainScreen].bounds)
+//屏幕宽度
+#define SCREEN_WIDTH ([UIScreen mainScreen].bounds.size.width)
+//屏幕高度
+#define SCREEN_HEIGHT ([UIScreen mainScreen].bounds.size.height)
+#define CONTENT_HEIGHT (SCREEN_HEIGHT - NAVIGATION_BAR_HEIGHT - STATUS_BAR_HEIGHT)
+//屏幕分辨率
+#define SCREEN_RESOLUTION (SCREEN_WIDTH * SCREEN_HEIGHT * ([UIScreen mainScreen].scale))
+
+
+//获取系统版本         
+#define IOS_VERSION [[[UIDevice currentDevice] systemVersion] floatValue] 
+#define CurrentSystemVersion [[UIDevice currentDevice] systemVersion] 
+
+//获取系统时间戳
+#define getCurentTime [NSString stringWithFormat:@"%ld", (long)[[NSDate date] timeIntervalSince1970]]
+
+//判断是真机还是模拟器
+#if TARGET_OS_IPHONE
+//真机
+#endif
+#if TARGET_IPHONE_SIMULATOR
+//模拟器
+#endif
+
+//获取当前语言  
+#define CurrentLanguage ([[NSLocale preferredLanguages] objectAtIndex:0])
+
+
+//rgb颜色转换（16进制->10进制）  
+#define UIColorFromRGB(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]  
+
+//获取RGB颜色  
+#define RGBA(r,g,b,a) [UIColor colorWithRed:r/255.0f green:g/255.0f blue:b/255.0f alpha:a]  
+#define RGB(r,g,b) RGBA(r,g,b,1.0f)
+
+//读取本地图片  
+#define LOADIMAGE(file,ext) [UIImage imageWithContentsOfFile:[[NSBundle mainBundle]pathForResource:file ofType:ext]]  
+
+//定义UIImage对象  
+#define IMAGE(A) [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:A ofType:nil]]
+//DEBUG模式下打印日志,当前行  
+#ifdef  DEBUG  
+#define DLog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);  
+#else  
+#define DLog(...)  
+#endif 
+
+//主要单例
+#define UserDefaults [NSUserDefaults standardUserDefaults]
+#define NotificationCenter [NSNotificationCenter defaultCenter]
+#define SharedApplication [UIApplication sharedApplication]
+#define Bundle [NSBundle mainBundle]#define MainScreen [UIScreen mainScreen]
+
+//角度转弧度
+#define DEGREES_TO_RADIANS(d) (d * M_PI / 180)
+
+
+//文件目录
+#define kPathTemp           NSTemporaryDirectory()
+#define kPathDocument       [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0]
+#define kPathCache          [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0]
+#define kPathSearch         [kPathDocument  stringByAppendingPathComponent:@"Search.plist"]
+#define kPathMagazine       [kPathDocument stringByAppendingPathComponent:@"Magazine"]
+#define kPathDownloadedMgzs [kPathMagazine stringByAppendingPathComponent:@"DownloadedMgz.plist"]
+#define kPathDownloadURLs   [kPathMagazine stringByAppendingPathComponent:@"DownloadURLs.plist"]
+#define kPathOperation      [kPathMagazine stringByAppendingPathComponent:@"Operation.plist"]
+#define kPathSplashScreen   [kPathCache stringByAppendingPathComponent:@"splashScreen"]
+
+//GCD - 一次性执行
+#define DISPATCH_ONCE_BLOCK(onceBlock) static dispatch_once_t onceToken; dispatch_once(&onceToken, onceBlock);
+
+//GCD - 在Main线程上运行
+#define DISPATCH_MAIN_THREAD(mainQueueBlock) dispatch_async(dispatch_get_main_queue(), mainQueueBlock);
+
+//GCD - 开启异步线程
+#define DISPATCH_GLOBAL_QUEUE_DEFAULT(globalQueueBlock) dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), globalQueueBlocl);
+
+
+
+</pre>
+
+<p><a href="http://www.jianshu.com/p/4f19c49bf6d9?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=pc_all_hots&amp;utm_source=recommendation" target="_blank" rel="noopener">宏定义的黑魔法
+</a></p>
+<p>##2017-12-12<br>1.SVN删除分支文件夹，在提交时遇到过</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Commit filed(details follow):Directory &apos;xxx&apos; is out of date</span><br></pre></td></tr></table></figure>
+<p><strong>处理方法：</strong></p>
+<p>在此文件update一下再Commit即可成功</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/01/06/2018-03-23-iOS开发笔记/" data-id="cjoquocoy001cij44ln99r9b0" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/笔记/">笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/03/23/2018-03-23-谈谈KVO的实现原理/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          KVO的实现原理
+        
+      </div>
+    </a>
+  
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/加密/">加密</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/哈希/">哈希</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/字典/">字典</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/底层/">底层</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据结构/">数据结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/笔记/">笔记</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/算法/">算法</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/iOS/" style="font-size: 20px;">iOS</a> <a href="/tags/加密/" style="font-size: 10px;">加密</a> <a href="/tags/哈希/" style="font-size: 10px;">哈希</a> <a href="/tags/字典/" style="font-size: 10px;">字典</a> <a href="/tags/底层/" style="font-size: 15px;">底层</a> <a href="/tags/数据结构/" style="font-size: 10px;">数据结构</a> <a href="/tags/笔记/" style="font-size: 20px;">笔记</a> <a href="/tags/算法/" style="font-size: 15px;">算法</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/11/21/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2018/11/19/2018-11-19-NSOperationQueue-线程同步/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2018/11/05/iOS-自定义转场效果/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2018/10/10/2018-10-10-iOS之图片缓存/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2018/09/19/2018-09-18-iOS性能优化/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 耀敬业<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

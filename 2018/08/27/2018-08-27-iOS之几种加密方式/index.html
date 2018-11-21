@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>iOS之几种加密方式 | 耀敬业的博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="iOS之几种加密方式常用加密算法: 1.DES: Data Encrption Standard, 即数据加密算法, 它是 IBM 公司于1975年研究成功并公开发表的. 2.AES:高级机密标准, 这个标准用来替代原先的 DES, 已经被多方分析且广为全世界所使用. 高级加密标准依然成为对称钥加密中最流行的算法之一. 3.RSA: RSA加密算法是一种非对称加密算法。在公开密钥加密和电子商业中R">
+<meta name="keywords" content="iOS,加密">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS之几种加密方式">
+<meta property="og:url" content="http://yoursite.com/2018/08/27/2018-08-27-iOS之几种加密方式/index.html">
+<meta property="og:site_name" content="耀敬业的博客">
+<meta property="og:description" content="iOS之几种加密方式常用加密算法: 1.DES: Data Encrption Standard, 即数据加密算法, 它是 IBM 公司于1975年研究成功并公开发表的. 2.AES:高级机密标准, 这个标准用来替代原先的 DES, 已经被多方分析且广为全世界所使用. 高级加密标准依然成为对称钥加密中最流行的算法之一. 3.RSA: RSA加密算法是一种非对称加密算法。在公开密钥加密和电子商业中R">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-08-27T04:33:30.897Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOS之几种加密方式">
+<meta name="twitter:description" content="iOS之几种加密方式常用加密算法: 1.DES: Data Encrption Standard, 即数据加密算法, 它是 IBM 公司于1975年研究成功并公开发表的. 2.AES:高级机密标准, 这个标准用来替代原先的 DES, 已经被多方分析且广为全世界所使用. 高级加密标准依然成为对称钥加密中最流行的算法之一. 3.RSA: RSA加密算法是一种非对称加密算法。在公开密钥加密和电子商业中R">
+  
+    <link rel="alternate" href="/atom.xml" title="耀敬业的博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">耀敬业的博客</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-2018-08-27-iOS之几种加密方式" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/08/27/2018-08-27-iOS之几种加密方式/" class="article-date">
+  <time datetime="2018-08-26T16:00:00.000Z" itemprop="datePublished">2018-08-27</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      iOS之几种加密方式
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="iOS之几种加密方式"><a href="#iOS之几种加密方式" class="headerlink" title="iOS之几种加密方式"></a>iOS之几种加密方式</h1><h3 id="常用加密算法"><a href="#常用加密算法" class="headerlink" title="常用加密算法:"></a>常用加密算法:</h3><blockquote>
+<p>1.<strong>DES:</strong> Data Encrption Standard, 即数据加密算法, 它是 IBM 公司于1975年研究成功并公开发表的.</p>
+<p>2.<strong>AES:</strong>高级机密标准, 这个标准用来替代原先的 DES, 已经被多方分析且广为全世界所使用. 高级加密标准依然成为对称钥加密中最流行的算法之一.</p>
+<p>3.<strong>RSA:</strong> RSA加密算法是一种非对称加密算法。在公开密钥加密和电子商业中RSA被广泛使用。RSA是1977年由罗纳德·李维斯特（Ron Rivest）、阿迪·萨莫尔（Adi Shamir）和伦纳德·阿德曼（Leonard Adleman）一起提出的。当时他们三人都在麻省理工学院工作。RSA就是他们三人姓氏开头字母拼在一起组成的。</p>
+<p>3.<strong>MD5:</strong> Message-Digest Algorithm 5 (信息-摘要算法5), 用于确保信息传输完整一致, 是计算机广泛使用的杂凑算法之一(又译摘要算法、哈希算法), 主流语言普遍已有 MD5 实现. </p>
+<p>4.<strong>Basse64:</strong> Base64 是网络上最常见的用于传输 8bit 字节代码的编码方式之一. Base64 编码可用于在HTTP环境下传递较长的表识信息, 采用 Base64 编码具有不可读性, 即所编码的数据不会被人用肉眼所直接看到的.</p>
+</blockquote>
+<h3 id="算法实现"><a href="#算法实现" class="headerlink" title="算法实现"></a>算法实现</h3><h4 id="MD5"><a href="#MD5" class="headerlink" title="MD5"></a>MD5</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">#import &lt;Foundation/Foundation.h&gt;</span><br><span class="line"></span><br><span class="line">@interface NSString (MTEncrypt)</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> *  md5加密</span><br><span class="line"> */</span><br><span class="line">@property (nonatomic, copy, readonly) NSString *md5String;</span><br><span class="line">- (NSString *)mt_EncryptMD5;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;NSString+MTEncrypt.h&quot;</span><br><span class="line"></span><br><span class="line">//md5头文件</span><br><span class="line">#import &lt;CommonCrypto/CommonDigest.h&gt;</span><br><span class="line"></span><br><span class="line">@implementation NSString (MTEncrypt)</span><br><span class="line"></span><br><span class="line">-(NSString *)md5String&#123;</span><br><span class="line">    return [self mt_EncryptMD5];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (NSString *)mt_EncryptMD5&#123;</span><br><span class="line">    </span><br><span class="line">    const char *cStr = self.UTF8String;</span><br><span class="line">    unsigned char digest[CC_MD5_DIGEST_LENGTH];</span><br><span class="line">    </span><br><span class="line">    CC_MD5( cStr, (CC_LONG)strlen(cStr), digest );</span><br><span class="line">    NSMutableString *result = [NSMutableString stringWithCapacity:CC_MD5_DIGEST_LENGTH * 2];</span><br><span class="line">    </span><br><span class="line">    for(int i = 0; i &lt; CC_MD5_DIGEST_LENGTH; i++)&#123;</span><br><span class="line">       [result appendFormat:@&quot;%02x&quot;, digest[i]];</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    return result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="Base64"><a href="#Base64" class="headerlink" title="Base64"></a>Base64</h4><p><strong>将文件加密</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// 获取需要加密文件的二进制数据// 获取需要 </span><br><span class="line">    NSData *data = [NSData dataWithContentsOfFile:@&quot;/Users/YJY/Desktop/photo/IMG_5551.jpg&quot;];</span><br><span class="line"></span><br><span class="line">    // 或 base64EncodedStringWithOptions</span><br><span class="line">    NSData *base64Data = [data base64EncodedDataWithOptions:0];</span><br><span class="line"></span><br><span class="line">    // 将加密后的文件存储到桌面</span><br><span class="line">    [base64Data writeToFile:@&quot;/Users/YJY/Desktop/123&quot; atomically:YES];</span><br></pre></td></tr></table></figure>
+<p><strong>将文件解密</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// 获得加密后的二进制数据</span><br><span class="line">    NSData *base64Data = [NSData dataWithContentsOfFile:@&quot;/Users/YJY/Desktop/123&quot;];</span><br><span class="line"></span><br><span class="line">    // 解密 base64 数据</span><br><span class="line">    NSData *baseData = [[NSData alloc] initWithBase64EncodedData:base64Data options:0];</span><br><span class="line"></span><br><span class="line">    // 写入桌面</span><br><span class="line">    [baseData writeToFile:@&quot;/Users/YJY/Desktop/IMG_5551.jpg&quot; atomically:YES];</span><br></pre></td></tr></table></figure>
+<p><strong>利用终端命令进行base64运算</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">// 将文件 test.png 进行 base64运算之后存储为 base64test.txt</span><br><span class="line">base64 test.png -o base64test.txt</span><br><span class="line"></span><br><span class="line">// 将mbase64test.txt 解码生成 base64test.png</span><br><span class="line">base64 -D base64test.txt -o base64test.png</span><br><span class="line"></span><br><span class="line">// 将字符串 &quot;hello&quot; 进行 base 64 编码 结果:aGVsbG8=cho &quot;hello&quot; | base64</span><br><span class="line"></span><br><span class="line">// 将 base64编码之后的结果 aGVsbG8= 反编码为字符串</span><br><span class="line">echo aGVsbG8= | base64 -D</span><br></pre></td></tr></table></figure>
+<h4 id="RSA加密"><a href="#RSA加密" class="headerlink" title="RSA加密"></a>RSA加密</h4><p><strong>RSA加解密实例头文件</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">// RSA加密封装类</span><br><span class="line">//注意：如果使用，需要打开钥匙串；因为iOS不支持直接使用字符串格式的公钥进行加密，转换为文件后可使用</span><br><span class="line"></span><br><span class="line">#import &lt;Foundation/Foundation.h&gt;</span><br><span class="line"></span><br><span class="line">@interface RSAEncryptor : NSObject</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> *  加密方法</span><br><span class="line"> *</span><br><span class="line"> *  @param str   需要加密的字符串</span><br><span class="line"> *  @param path  &apos;.der&apos;格式的公钥文件路径</span><br><span class="line"> */</span><br><span class="line">+ (NSString *)encryptString:(NSString *)str publicKeyWithContentsOfFile:(NSString *)path;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> *  解密方法</span><br><span class="line"> *</span><br><span class="line"> *  @param str       需要解密的字符串</span><br><span class="line"> *  @param path      &apos;.p12&apos;格式的私钥文件路径</span><br><span class="line"> *  @param password  私钥文件密码</span><br><span class="line"> */</span><br><span class="line">+ (NSString *)decryptString:(NSString *)str privateKeyWithContentsOfFile:(NSString *)path password:(NSString *)password;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> *  加密方法</span><br><span class="line"> *</span><br><span class="line"> *  @param str    需要加密的字符串</span><br><span class="line"> *  @param pubKey 公钥字符串</span><br><span class="line"> */</span><br><span class="line">+ (NSString *)encryptString:(NSString *)str publicKey:(NSString *)pubKey;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> *  解密方法</span><br><span class="line"> *</span><br><span class="line"> *  @param str     需要解密的字符串</span><br><span class="line"> *  @param privKey 私钥字符串</span><br><span class="line"> */</span><br><span class="line">+ (NSString *)decryptString:(NSString *)str privateKey:(NSString *)privKey;</span><br><span class="line"></span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">作者：CocoaFei</span><br><span class="line">链接：https://www.jianshu.com/p/54c386275c08</span><br><span class="line">來源：简书</span><br><span class="line">简书著作权归作者所有，任何形式的转载都请联系作者获得授权并注明出处。</span><br></pre></td></tr></table></figure>
+<p><strong>RSA加解密用法实例</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">//----------------------RSA加密示例------------------------</span><br><span class="line">//原始数据，要加密的字符串</span><br><span class="line">NSString *originalString = @&quot;这是一段将要使用&apos;秘钥字符串&apos;进行加密的字符串!&quot;;</span><br><span class="line"></span><br><span class="line">//使用字符串格式的公钥私钥加密解密, RSAPublickKey为公钥字符串(NSString格式)</span><br><span class="line">NSString *encryptStr = [RSAEncryptor encryptString:originalString publicKey:RSAPublickKey];</span><br><span class="line"></span><br><span class="line">NSLog(@&quot;加密前:%@&quot;, originalString);</span><br><span class="line">NSLog(@&quot;加密后:%@&quot;, encryptStr);</span><br><span class="line">//用私钥解密，RSAPrivateKey为私钥字符串(NSString格式)</span><br><span class="line">NSString *decryptString = [RSAEncryptor decryptString:encryptStr privateKey:RSAPrivateKey];</span><br><span class="line"></span><br><span class="line">NSLog(@&quot;解密后:%@&quot;,decryptString);</span><br><span class="line"></span><br><span class="line">作者：CocoaFei</span><br><span class="line">链接：https://www.jianshu.com/p/54c386275c08</span><br><span class="line">來源：简书</span><br><span class="line">简书著作权归作者所有，任何形式的转载都请联系作者获得授权并注明出处。</span><br></pre></td></tr></table></figure>
+<p><a href="https://github.com/muzipiao/RSAEncrypt" target="_blank" rel="noopener">RASEncrypt</a></p>
+<p><strong>注意:</strong>加密的字符串会包含一些特殊字符串, 在网络传输过程中导致转义, 进而会导致服务器解密失败.以下为转义代码:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">//去掉特殊字符</span><br><span class="line"></span><br><span class="line">NSCharacterSet *setString = [NSCharacterSet characterSetWithCharactersInString:@&quot;@／：；（）¥「」＂、[]&#123;&#125;#%-*+=_\\|~＜＞$?^?&apos;@#$%^&amp;*()_+&apos;\&quot;&quot;];</span><br><span class="line">NSString *disposeString = [[NSString stringWithFormat:@&quot;%@&quot;,@&quot;字符串&quot;] stringByTrimmingCharactersInSet:setString];</span><br></pre></td></tr></table></figure>
+<h2 id="更多参考"><a href="#更多参考" class="headerlink" title="更多参考"></a>更多参考</h2><p><a href="https://www.jianshu.com/p/8fd8306a95d0" target="_blank" rel="noopener">iOS，一行代码进行RSA、DES 、AES加密、解密及MD5加密</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/08/27/2018-08-27-iOS之几种加密方式/" data-id="cjoquocoa000aij44fj8js0w1" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/加密/">加密</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/08/27/2018-08-27-哈希表/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          哈希表
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/08/24/2018-08-24-算法-时间复杂度/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">算法之时间复杂度</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/加密/">加密</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/哈希/">哈希</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/字典/">字典</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/底层/">底层</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据结构/">数据结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/笔记/">笔记</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/算法/">算法</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/iOS/" style="font-size: 20px;">iOS</a> <a href="/tags/加密/" style="font-size: 10px;">加密</a> <a href="/tags/哈希/" style="font-size: 10px;">哈希</a> <a href="/tags/字典/" style="font-size: 10px;">字典</a> <a href="/tags/底层/" style="font-size: 15px;">底层</a> <a href="/tags/数据结构/" style="font-size: 10px;">数据结构</a> <a href="/tags/笔记/" style="font-size: 20px;">笔记</a> <a href="/tags/算法/" style="font-size: 15px;">算法</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/11/21/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2018/11/19/2018-11-19-NSOperationQueue-线程同步/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2018/11/05/iOS-自定义转场效果/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2018/10/10/2018-10-10-iOS之图片缓存/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2018/09/19/2018-09-18-iOS性能优化/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 耀敬业<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

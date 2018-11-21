@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>耀敬业的博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="iOS-自定义转场效果转场动画我们常用的就是push、pop、present、dismiss四种动画. PUSH动画push动画需要配合navigationController来使用, 所以需要UINavigationControllerDelegate 如下为需要用到的UINavigationControlloerDelegate的函数 1234567- (nullable id &amp;lt;UIV">
+<meta property="og:type" content="article">
+<meta property="og:title" content="耀敬业的博客">
+<meta property="og:url" content="http://yoursite.com/2018/11/05/iOS-自定义转场效果/index.html">
+<meta property="og:site_name" content="耀敬业的博客">
+<meta property="og:description" content="iOS-自定义转场效果转场动画我们常用的就是push、pop、present、dismiss四种动画. PUSH动画push动画需要配合navigationController来使用, 所以需要UINavigationControllerDelegate 如下为需要用到的UINavigationControlloerDelegate的函数 1234567- (nullable id &amp;lt;UIV">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-11-05T10:50:48.424Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="耀敬业的博客">
+<meta name="twitter:description" content="iOS-自定义转场效果转场动画我们常用的就是push、pop、present、dismiss四种动画. PUSH动画push动画需要配合navigationController来使用, 所以需要UINavigationControllerDelegate 如下为需要用到的UINavigationControlloerDelegate的函数 1234567- (nullable id &amp;lt;UIV">
+  
+    <link rel="alternate" href="/atom.xml" title="耀敬业的博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">耀敬业的博客</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-iOS-自定义转场效果" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/11/05/iOS-自定义转场效果/" class="article-date">
+  <time datetime="2018-11-05T10:50:48.424Z" itemprop="datePublished">2018-11-05</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="iOS-自定义转场效果"><a href="#iOS-自定义转场效果" class="headerlink" title="iOS-自定义转场效果"></a>iOS-自定义转场效果</h1><p><strong>转场动画我们常用的就是<code>push</code>、<code>pop</code>、<code>present</code>、<code>dismiss</code>四种动画</strong>.</p>
+<h3 id="PUSH动画"><a href="#PUSH动画" class="headerlink" title="PUSH动画"></a>PUSH动画</h3><p>push动画需要配合<code>navigationController</code>来使用, 所以需要<code>UINavigationControllerDelegate</code></p>
+<p>如下为需要用到的<code>UINavigationControlloerDelegate</code>的函数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">- (nullable id &lt;UIViewControllerInteractiveTransitioning&gt;)navigationController:(UINavigationController *)navigationController</span><br><span class="line">                          interactionControllerForAnimationController:(id &lt;UIViewControllerAnimatedTransitioning&gt;) animationController NS_AVAILABLE_IOS(7_0);</span><br><span class="line"></span><br><span class="line">- (nullable id &lt;UIViewControllerAnimatedTransitioning&gt;)navigationController:(UINavigationController *)navigationController</span><br><span class="line">                                   animationControllerForOperation:(UINavigationControllerOperation)operation</span><br><span class="line">                                                fromViewController:(UIViewController *)fromVC</span><br><span class="line">                                                  toViewController:(UIViewController *)toVC  NS_AVAILABLE_IOS(7_0);</span><br></pre></td></tr></table></figure>
+<p>上面两个函数的返回值分别是:<code>UIViewControllerInteractiveTransitioning</code>、<code>UIViewControllerAnimatedTransitioning</code></p>
+<p><strong>UIViewControllerAnimationedTransitioning</strong><br>这个类有两个函数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">//转场时间</span><br><span class="line">- (NSTimeInterval)transitionDuration:(nullable id &lt;UIViewControllerContextTransitioning&gt;)transitionContext;</span><br><span class="line"></span><br><span class="line">//</span><br><span class="line">- (void)animateTransition:(id &lt;UIViewControllerContextTransitioning&gt;)transitionContext;</span><br></pre></td></tr></table></figure>
+<p>第一个函数通过返回<code>NSTimeInterval</code>可以知道这个函数就是转场时间<br>第二个函数有个新的类<code>UIViewControllerContextTransitioning</code></p>
+<p><strong>UIViewControllerContextTransitioning</strong><br>这个类是自定义转场动画的核心:转场动画的上下文</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">//转场动画的容器</span><br><span class="line">@property(nonatomic, readonly) UIView *containerView;</span><br><span class="line"></span><br><span class="line">//通过对用的 key 可以获得我们需要的 VC</span><br><span class="line">- (nullable __kindof UIViewController *)viewControllerForKey:(UITransitionContextViewControllerKey)key;</span><br><span class="line"></span><br><span class="line">//转场动画完成时调用, 否则无效</span><br><span class="line">- (void)completeTransition:(BOOL)didComplete;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/11/05/iOS-自定义转场效果/" data-id="cjoquocol000nij442pwud2x3" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/11/19/2018-11-19-NSOperationQueue-线程同步/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          (no title)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/10/10/2018-10-10-iOS之图片缓存/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title"></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/加密/">加密</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/哈希/">哈希</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/字典/">字典</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/底层/">底层</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据结构/">数据结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/笔记/">笔记</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/算法/">算法</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/iOS/" style="font-size: 20px;">iOS</a> <a href="/tags/加密/" style="font-size: 10px;">加密</a> <a href="/tags/哈希/" style="font-size: 10px;">哈希</a> <a href="/tags/字典/" style="font-size: 10px;">字典</a> <a href="/tags/底层/" style="font-size: 15px;">底层</a> <a href="/tags/数据结构/" style="font-size: 10px;">数据结构</a> <a href="/tags/笔记/" style="font-size: 20px;">笔记</a> <a href="/tags/算法/" style="font-size: 15px;">算法</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/11/21/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2018/11/19/2018-11-19-NSOperationQueue-线程同步/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2018/11/05/iOS-自定义转场效果/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2018/10/10/2018-10-10-iOS之图片缓存/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2018/09/19/2018-09-18-iOS性能优化/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 耀敬业<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

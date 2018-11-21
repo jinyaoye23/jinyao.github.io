@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>iOS之NSDictionary的底层实现 | 耀敬业的博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="iOS之NSDictionary的底层实现NSDictionary使用原理 NSDictionary 是使用 hash 表来实现 key 和 value, hash 函数设计的好坏影响着数据的查找访问速率. Objective-C 中的字典 NSDictionary 底层是一个哈希表, 实际上绝大多数语言中的字典都是通过哈希表实现.  哈希的原理 哈希表的本质是一个数组, 数组中每一个元素称为一个">
+<meta name="keywords" content="iOS,字典,底层">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS之NSDictionary的底层实现">
+<meta property="og:url" content="http://yoursite.com/2018/08/27/2018-08-27-iOS之NSDictionary的底层实现/index.html">
+<meta property="og:site_name" content="耀敬业的博客">
+<meta property="og:description" content="iOS之NSDictionary的底层实现NSDictionary使用原理 NSDictionary 是使用 hash 表来实现 key 和 value, hash 函数设计的好坏影响着数据的查找访问速率. Objective-C 中的字典 NSDictionary 底层是一个哈希表, 实际上绝大多数语言中的字典都是通过哈希表实现.  哈希的原理 哈希表的本质是一个数组, 数组中每一个元素称为一个">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-08-27T10:33:43.900Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOS之NSDictionary的底层实现">
+<meta name="twitter:description" content="iOS之NSDictionary的底层实现NSDictionary使用原理 NSDictionary 是使用 hash 表来实现 key 和 value, hash 函数设计的好坏影响着数据的查找访问速率. Objective-C 中的字典 NSDictionary 底层是一个哈希表, 实际上绝大多数语言中的字典都是通过哈希表实现.  哈希的原理 哈希表的本质是一个数组, 数组中每一个元素称为一个">
+  
+    <link rel="alternate" href="/atom.xml" title="耀敬业的博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">耀敬业的博客</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-2018-08-27-iOS之NSDictionary的底层实现" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/08/27/2018-08-27-iOS之NSDictionary的底层实现/" class="article-date">
+  <time datetime="2018-08-26T16:00:00.000Z" itemprop="datePublished">2018-08-27</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      iOS之NSDictionary的底层实现
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="iOS之NSDictionary的底层实现"><a href="#iOS之NSDictionary的底层实现" class="headerlink" title="iOS之NSDictionary的底层实现"></a>iOS之NSDictionary的底层实现</h1><h2 id="NSDictionary使用原理"><a href="#NSDictionary使用原理" class="headerlink" title="NSDictionary使用原理"></a>NSDictionary使用原理</h2><ul>
+<li><strong>NSDictionary</strong> 是使用 <strong>hash</strong> 表来实现 <strong>key</strong> 和 <strong>value</strong>, <strong>hash</strong> 函数设计的好坏影响着数据的查找访问速率.</li>
+<li><strong>Objective-C</strong> 中的字典 <strong>NSDictionary</strong> 底层是一个哈希表, 实际上绝大多数语言中的字典都是通过哈希表实现.</li>
+</ul>
+<h2 id="哈希的原理"><a href="#哈希的原理" class="headerlink" title="哈希的原理"></a>哈希的原理</h2><blockquote>
+<p>哈希表的本质是一个数组, 数组中每一个元素称为一个箱子(<strong>bing</strong>), 箱子中存放的是键值对.</p>
+</blockquote>
+<h2 id="哈希表的存储过程"><a href="#哈希表的存储过程" class="headerlink" title="哈希表的存储过程"></a>哈希表的存储过程</h2><ul>
+<li>根据 <strong>key</strong> 计算出它的哈希值 h</li>
+<li>假设箱子的个数为 n, 那么这个键值对应该放在第(<strong>h%n</strong>)个箱子中</li>
+<li>假如该箱子中已经有了键值对, 就是用开放寻址法或拉链法解决冲突</li>
+</ul>
+<p>在使用拉链法解决哈希冲突时, 每个箱子其实是一个链表, 属于同一个箱子的所有键值对都会排列在链表中.</p>
+<h3 id="链表实现数组"><a href="#链表实现数组" class="headerlink" title="链表实现数组"></a>链表实现数组</h3><p><strong>.h文件</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">#import &lt;Foundation/Foundation.h&gt;</span><br><span class="line"></span><br><span class="line">@interface YJYLinkedArray : NSObject</span><br><span class="line"></span><br><span class="line">@property(assign,nonatomic) NSUInteger size; //数组长度</span><br><span class="line"></span><br><span class="line">-(void)addObject:(NSObject *)obj;            //添加元素</span><br><span class="line"></span><br><span class="line">-(void)remove:(NSObject *)obj;               // 移除指定元素</span><br><span class="line"></span><br><span class="line">-(void)removeAtIndext:(NSInteger)index;      //移除制定索引元素</span><br><span class="line"></span><br><span class="line">-(NSObject *)objectAtIndex:(NSInteger)index; //获取指定位置的元素</span><br><span class="line"></span><br><span class="line">+(instancetype)array;                        //数组初始化</span><br><span class="line"></span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">@interface Node : NSObject</span><br><span class="line"></span><br><span class="line">@property(strong,nonatomic) Node  *previous;  //上个节点</span><br><span class="line"></span><br><span class="line">@property(strong,nonatomic) Node  *next;      //下个节点</span><br><span class="line"></span><br><span class="line">@property(strong,nonatomic) id     content;   //当前节点内容</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<p><strong>.m文件</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;YJYLinkedArray.h&quot;</span><br><span class="line"></span><br><span class="line">@interface YJYLinkedArray ()</span><br><span class="line"></span><br><span class="line">@property(strong,nonatomic) Node  *first; //首个节点</span><br><span class="line">@property(strong,nonatomic) Node  *last;  //最后节点</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation YJYLinkedArray</span><br><span class="line"></span><br><span class="line">-(void)addObject:(NSObject *)obj&#123;</span><br><span class="line">    if (!obj) &#123;</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line">    _size ++;</span><br><span class="line">    </span><br><span class="line">    Node *node = [[Node alloc]init];</span><br><span class="line">    //首个节点为空</span><br><span class="line">    if (!_first) &#123;</span><br><span class="line">        _first = node;</span><br><span class="line">        _last = node;</span><br><span class="line">        node.previous = nil;</span><br><span class="line">        node.next = nil;</span><br><span class="line">        node.content = obj;</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line">    //数组中有值</span><br><span class="line">    node.previous = _last;</span><br><span class="line">    node.next = nil;</span><br><span class="line">    node.content = obj;</span><br><span class="line">    _last = node;</span><br><span class="line">    _last.next = node;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">-(void)remove:(NSObject *)obj&#123;</span><br><span class="line">    if (!obj || !_size) &#123;</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    Node *tmpNode = _first;</span><br><span class="line">    for (NSInteger index = 0; index &lt; _size; index ++) &#123;</span><br><span class="line">        if ([tmpNode.content isEqual:obj]) &#123;</span><br><span class="line">            [self removeNode:tmpNode]; //移除节点</span><br><span class="line">            break;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">-(void)removeAtIndext:(NSInteger)index&#123;</span><br><span class="line">    if (index &lt; 0 || index &gt;= _size) &#123;</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    Node *tmpNode = _first;</span><br><span class="line">    for (NSInteger i = 0; i &lt; _size; i ++) &#123;</span><br><span class="line">        if (i == index) &#123;</span><br><span class="line">            [self removeNode:tmpNode];</span><br><span class="line">            break;</span><br><span class="line">        &#125;</span><br><span class="line">        tmpNode = tmpNode.next;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">-(NSObject *)objectAtIndex:(NSInteger)index&#123;</span><br><span class="line">    </span><br><span class="line">    if (index &lt; 0 || index &gt;= _size) &#123;</span><br><span class="line">        return nil;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    Node *tmpNode = _first;</span><br><span class="line">    for (NSInteger i = 0 ; i &lt; _size; i++) &#123;</span><br><span class="line">        if (i == index) &#123;</span><br><span class="line">            return tmpNode.content;</span><br><span class="line">        &#125;</span><br><span class="line">        tmpNode = tmpNode.next;</span><br><span class="line">    &#125;</span><br><span class="line">    return nil;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">-(void)removeNode:(Node *)node&#123;</span><br><span class="line">    Node *preNode = node.previous;</span><br><span class="line">    Node *nextNode = node.next;</span><br><span class="line">    preNode.next = nextNode;</span><br><span class="line">    nextNode.previous = preNode;</span><br><span class="line">    node.content = nil;</span><br><span class="line">    _size --;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">+(instancetype)array&#123;</span><br><span class="line">    return [[self alloc]init];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">@implementation Node</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<h2 id="自定义字典类"><a href="#自定义字典类" class="headerlink" title="自定义字典类"></a>自定义字典类</h2><p><strong>.h文件</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">#import &lt;Foundation/Foundation.h&gt;</span><br><span class="line"></span><br><span class="line">@interface YJYDictionary : NSObject</span><br><span class="line"></span><br><span class="line">+(instancetype)dictionary;</span><br><span class="line"></span><br><span class="line">-(void)setValue:(id)value forKey:(NSString *)key;</span><br><span class="line">-(id)valueForKey:(NSString *)key;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<p><strong>.m文件</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;YJYDictionary.h&quot;</span><br><span class="line">#import &quot;YJYLinkedArray.h&quot;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">@interface KeyValueCache : NSObject</span><br><span class="line"></span><br><span class="line">@property(strong,nonatomic) NSString  *key;</span><br><span class="line">@property(strong,nonatomic) id  value;</span><br><span class="line"></span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation KeyValueCache</span><br><span class="line"></span><br><span class="line">+ (instancetype)key:(NSString *)key value:(id)value&#123;</span><br><span class="line">    KeyValueCache *model = [[self alloc]init];</span><br><span class="line">    model.key = key;</span><br><span class="line">    model.value = value;</span><br><span class="line">    return model;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">@interface YJYDictionary ()</span><br><span class="line"></span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation YJYDictionary</span><br><span class="line">&#123;</span><br><span class="line">    YJYLinkedArray *_keyValues[999];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//赋值</span><br><span class="line"></span><br><span class="line">-(void)setValue:(id)value forKey:(NSString *)key&#123;</span><br><span class="line">    </span><br><span class="line">    //获取hashCode</span><br><span class="line">    </span><br><span class="line">    NSUInteger hash = key.hash;</span><br><span class="line">    </span><br><span class="line">    //默认一个对象占用8个字节</span><br><span class="line">    </span><br><span class="line">    NSUInteger realCode = hash%(sizeof(_keyValues)/8);</span><br><span class="line">    </span><br><span class="line">    YJYLinkedArray *linkArr = _keyValues[realCode];</span><br><span class="line">    if (linkArr) &#123;//如果存在链表数组</span><br><span class="line">        </span><br><span class="line">        for (NSInteger index = 0; index &lt; linkArr.size; index ++) &#123;</span><br><span class="line">            KeyValueCache *keyvalue = (KeyValueCache *)[linkArr objectAtIndex:index];</span><br><span class="line">            if ([keyvalue.key isEqualToString:key]) &#123;</span><br><span class="line">                keyvalue.value = value; //重新赋值value</span><br><span class="line">                </span><br><span class="line">                return;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        KeyValueCache *newKeyValue = [KeyValueCache key:key value:value];</span><br><span class="line">        [linkArr addObject:newKeyValue];</span><br><span class="line">    </span><br><span class="line">    &#125;else&#123;//不存在链表数组</span><br><span class="line">        </span><br><span class="line">        //创建新的链表数组</span><br><span class="line">        </span><br><span class="line">        YJYLinkedArray *newLinkArray = [YJYLinkedArray array];</span><br><span class="line">        KeyValueCache *newKeyValue = [KeyValueCache key:key value:value];</span><br><span class="line">        [newLinkArray addObject:newKeyValue];</span><br><span class="line">        _keyValues[realCode] = newLinkArray;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">-(id)valueForKey:(NSString *)key&#123;</span><br><span class="line">    if (!key.length) &#123;</span><br><span class="line">        return nil;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    NSUInteger hash = key.hash;</span><br><span class="line">    NSUInteger realCode = hash%(sizeof(_keyValues)/8);</span><br><span class="line">    </span><br><span class="line">    YJYLinkedArray *linkArr = _keyValues[realCode];</span><br><span class="line">    if (linkArr) &#123;</span><br><span class="line">        for (NSInteger index = 0; index &lt; linkArr.size; index ++) &#123;</span><br><span class="line">            KeyValueCache *keyValue = (KeyValueCache *)[linkArr objectAtIndex:index];</span><br><span class="line">            if ([keyValue.key isEqualToString:key]) &#123;</span><br><span class="line">                return keyValue.value;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return nil;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">+(instancetype)dictionary&#123;</span><br><span class="line">    return [[self alloc]init];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">YJYDictionary *dic = [YJYDictionary dictionary];</span><br><span class="line">dic setValue:@&quot;你好&quot; forKey:@&quot;note&quot;];</span><br><span class="line">[dic setValue:@&quot;大家好&quot; forKey:@&quot;you&quot;];</span><br><span class="line">NSLog(@&quot;%@&quot;, [dic valueForKey:@&quot;note&quot;]);</span><br><span class="line">NSLog(@&quot;%@&quot;, [dic valueForKey:@&quot;you&quot;]);</span><br></pre></td></tr></table></figure>
+<p><strong>结果:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">2018-08-27 17:15:13.387425+0800 LinkedDemo[3826:874451] 你好</span><br><span class="line">2018-08-27 17:15:13.387571+0800 LinkedDemo[3826:874451] 大家好</span><br></pre></td></tr></table></figure>
+<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><p><a href="https://blog.csdn.net/zixiweimi/article/details/56677203" target="_blank" rel="noopener">NSDictionary实现原理</a></p>
+<p><a href="https://blog.csdn.net/linshaolie/article/details/41494303" target="_blank" rel="noopener">NSDictionary实现原理</a></p>
+<p><a href="https://blog.csdn.net/codermy/article/details/71037860" target="_blank" rel="noopener">iOS - OC字典底层实现模拟(数组+链表)</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/08/27/2018-08-27-iOS之NSDictionary的底层实现/" data-id="cjoquoco70007ij44wk88xemp" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/字典/">字典</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/底层/">底层</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/08/28/2018-08-28-读书笔记《大话数据结构》/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          (no title)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/08/27/2018-08-27-哈希表/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">哈希表</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/加密/">加密</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/哈希/">哈希</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/字典/">字典</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/底层/">底层</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据结构/">数据结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/笔记/">笔记</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/算法/">算法</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/iOS/" style="font-size: 20px;">iOS</a> <a href="/tags/加密/" style="font-size: 10px;">加密</a> <a href="/tags/哈希/" style="font-size: 10px;">哈希</a> <a href="/tags/字典/" style="font-size: 10px;">字典</a> <a href="/tags/底层/" style="font-size: 15px;">底层</a> <a href="/tags/数据结构/" style="font-size: 10px;">数据结构</a> <a href="/tags/笔记/" style="font-size: 20px;">笔记</a> <a href="/tags/算法/" style="font-size: 15px;">算法</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/11/21/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2018/11/19/2018-11-19-NSOperationQueue-线程同步/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2018/11/05/iOS-自定义转场效果/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2018/10/10/2018-10-10-iOS之图片缓存/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2018/09/19/2018-09-18-iOS性能优化/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 耀敬业<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
