@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.5.0" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.5.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.5.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.5.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.5.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '6.5.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="KVO的实现原理1.KVO是什么？KVO是Objective-C对观察者模式的一种实现。 KVO提供一种机制，指定一个被观察对象（例如A类），当对象的某个属性（例如A中的字符串name）发生改变时，对象会获得通知，并作出处理。【且不需要给被观察的对象添加任何额外代码，就能使用KVO机制】 2. 实现原理？KVO在Apple中的API文档如下： 123Automatic key-value obse">
+<meta name="keywords" content="iOS,笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="KVO的实现原理">
+<meta property="og:url" content="http://yoursite.com/2018/03/23/2018-03-23-谈谈KVO的实现原理/index.html">
+<meta property="og:site_name" content="耀敬业的技术博客">
+<meta property="og:description" content="KVO的实现原理1.KVO是什么？KVO是Objective-C对观察者模式的一种实现。 KVO提供一种机制，指定一个被观察对象（例如A类），当对象的某个属性（例如A中的字符串name）发生改变时，对象会获得通知，并作出处理。【且不需要给被观察的对象添加任何额外代码，就能使用KVO机制】 2. 实现原理？KVO在Apple中的API文档如下： 123Automatic key-value obse">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-08-22T03:43:39.205Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="KVO的实现原理">
+<meta name="twitter:description" content="KVO的实现原理1.KVO是什么？KVO是Objective-C对观察者模式的一种实现。 KVO提供一种机制，指定一个被观察对象（例如A类），当对象的某个属性（例如A中的字符串name）发生改变时，对象会获得通知，并作出处理。【且不需要给被观察的对象添加任何额外代码，就能使用KVO机制】 2. 实现原理？KVO在Apple中的API文档如下： 123Automatic key-value obse">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/03/23/2018-03-23-谈谈KVO的实现原理/">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>KVO的实现原理 | 耀敬业的技术博客</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+	
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">耀敬业的技术博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">实践是检验真理的唯一标准</p>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+  
+  
+  
+  
+
+  
+
+    <a href="https://github.com/jinyaoye23" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewbox="0 0 250 250" style="fill: #222; color: #fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a>
+
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/23/2018-03-23-谈谈KVO的实现原理/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="耀敬业">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar_m.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="耀敬业的技术博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">KVO的实现原理
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-03-23 00:00:00" itemprop="dateCreated datePublished" datetime="2018-03-23T00:00:00+08:00">2018-03-23</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2018-08-22 11:43:39" itemprop="dateModified" datetime="2018-08-22T11:43:39+08:00">2018-08-22</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="KVO的实现原理"><a href="#KVO的实现原理" class="headerlink" title="KVO的实现原理"></a>KVO的实现原理</h1><h2 id="1-KVO是什么？"><a href="#1-KVO是什么？" class="headerlink" title="1.KVO是什么？"></a>1.KVO是什么？</h2><p>KVO是Objective-C对观察者模式的一种实现。</p>
+<p>KVO提供一种机制，指定一个被观察对象（例如A类），当对象的某个属性（例如A中的字符串name）发生改变时，对象会获得通知，并作出处理。【且不需要给被观察的对象添加任何额外代码，就能使用KVO机制】</p>
+<h2 id="2-实现原理？"><a href="#2-实现原理？" class="headerlink" title="2. 实现原理？"></a>2. 实现原理？</h2><p>KVO在Apple中的API文档如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Automatic key-value observing is implemented using a technique called isa-swizzling.. </span><br><span class="line">When an observer is registered for an attribute of an object the isa pointer of the observed object is modified, </span><br><span class="line">pointing to an intermediate class rather than at the true class..</span><br></pre></td></tr></table></figure>
+<p><strong>基本原理：</strong></p>
+<p>当观察某个对象A时，KVO机制动态创建一个对象A当前类的子类，并为这个新建的子类重写了被观察属性keyPath的setter方法。setter方法随后负责通知观察对象属性的变化状况。</p>
+<p><strong>深入剖析：</strong></p>
+<p>Apple 使用了isa混写（isa-swizzling）来实现KVO。当观察对象A，KVO机制会动态创建一个新的名为：NSKVONotifying_A的新类，该类继承自对象A的本类，且KVO为NSKVONotifying_A重写观察属性的setter方法，setter方法负责调用原setter方法之前和之后，通知所有观察对象属性值的更改情况。</p>
+<p><strong>NSKVONotifying_A类剖析：</strong></p>
+<p>在这个过程中，被观察对象的isa指针从指向原来的A类，被KVO机制修改为指向系统新创建的子类NSKVONotifying_A类，来实现当前类属性值改变的监听。</p>
+<p>所以当我们从应用层面看来，完全没有意识到新类的出现，这个系统“隐瞒”了对KVO的底层实现过程，让我们误以为还是原来的类。但是此时我们如果创建一个新的类名为“NSKVONotifying_A”的类，就会发现系统运行到注册注册KVO的那段代码时程序就崩溃，因为系统在注册监听的时候动态创建了名为NSKVONotifying_A的中间类，并指向了这个中间类。        </p>
+<p>（isa 指针的作用：每个对象都有 isa 指针，指向该对象的类，它告诉 Runtime 系统这个对象的类是什么。所以对象注册为观察者时，isa 指针指向新子类，那么这个被观察的对象就神奇地变成新子类的对象（或实例）了。） 因而在该对象上对 setter 的调用就会调用已重写的 setter，从而激活键值通知机制。</p>
+<p><strong>子类setter方法剖析：</strong></p>
+<p>KVO的键值观察通知依赖NSObject的两个方法：willChangeValueForKey:和didChangeValueForKey:，在存取数值的前后分别调用了2个方法：被观察属性发生改变前，willchangeValueForKey:被调用，通知系统该keyPath的属性值即将变更；当改变发生后，didChangeValueForKey:被调用，通知系统该keyPath的属性值已经变更，之后，observeValueForKey:ofObject:change:context:也会被调用。且重写观察属性的setter方法这种继承方式的注入是在运行时而不是编译时实现的。</p>
+<p>KVO为子类的观察属性重写调用存取方法的工作原理在代码中相当于：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-(void)setName:(NSString *)newName&#123;</span><br><span class="line">  [self willChangeValueForKey:@&quot;name&quot;];             //KVO 在调用存取方法之前总调用 </span><br><span class="line">  [super setValue:newName forKey:@&quot;name&quot;];          //调用父类的存取方法 </span><br><span class="line">  [self didChangeValueForKey:@&quot;name&quot;];              //KVO 在调用存取方法之后总调用</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>特点：</strong></p>
+<p>察者观察的是属性，只有遵循 KVO 变更属性值的方式才会执行 KVO 的回调方法，例如是否执行了 setter 方法、或者是否使用了 KVC 赋值。<br>如果赋值没有通过 setter 方法或者 KVC，而是直接修改属性对应的成员变量，例如：仅调用 _name = @”newName”，这时是不会触发 KVO 机制，更加不会调用回调方法的。<br>所以使用 KVO 机制的前提是遵循 KVO 的属性设置方式来变更属性值。</p>
+<h2 id="3-项目应用"><a href="#3-项目应用" class="headerlink" title="3.项目应用"></a>3.项目应用</h2><p><strong>步骤：</strong><br>1.注册观察者，实施监听<br>2.在回调方法中处理属性发生的变化<br>3.移除观察者</p>
+<p><strong>1.注册观察者</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">//第一个参数 observer：观察者 （这里观察self.myKVO对象的属性变化） </span><br><span class="line">//第二个参数 keyPath： 被观察的属性名称(这里观察 self.myKVO 中 num 属性值的改变) </span><br><span class="line">//第三个参数 options： 观察属性的新值、旧值等的一些配置（枚举值，可以根据需要设置，例如这里可以使用两项）</span><br><span class="line"> //第四个参数 context： 上下文，可以为 KVO 的回调方法传值（例如设定为一个放置数据的字典）</span><br><span class="line"></span><br><span class="line"> [self.myKVO addObserver:self forKeyPath:@&quot;num&quot; options: NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil];</span><br></pre></td></tr></table></figure>
+<p><strong>2.属性（keyPath）的值发生变化时，收到通知，调用一下方法：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">//keyPath:属性名称 </span><br><span class="line">//object:被观察的对象 </span><br><span class="line">//change:变化前后的值都存储在 change 字典中 </span><br><span class="line">//context:注册观察者时，context 传过来的值 </span><br><span class="line"></span><br><span class="line">-(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary&lt;NSString *,id&gt; *)change context:(void *)context &#123; &#125;</span><br></pre></td></tr></table></figure>
+<p><strong>3.移除观察者</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[self.myKVO removeObserver:self forKeyPath:@&quot;num&quot; context:nil];</span><br></pre></td></tr></table></figure></p>
+<h2 id="4-拓展："><a href="#4-拓展：" class="headerlink" title="4. 拓展："></a>4. 拓展：</h2><p><strong>1.KVC与KVO的不同</strong></p>
+<p>KVC（键值编码），即Key-Value-Coding，一个非正式的Protocol，使用字符串（键）访问一个对象实例变量的机制，而不是通过调用setter、getter方法等显式的存取方法去访问。</p>
+<p>KVO（键值监听），即Key-Value Observing，它提供一种机制，当指定的对象的属性被修改后，对象就会接受到通知，前提是执行了setter方法，或者使用了KVC赋值。</p>
+<p><strong>2.和notification（通知）的区别</strong></p>
+<p>notification比KVO多了发送通知的一步。<br>两者都是一对多，但是对象之间直接的交互，notification明显得多，需要notificationCenter来做中间交互，而KVO如我们介绍的，设置观察者 -&gt; 处理属性变化， 至于中间通知这一环，则隐秘得多。</p>
+<p>Notification 的优点是不局限于属性的变化，还可以对多种多样的状态变化进行监听，监听范围广，例如键盘，前台后台等系统通知的使用也更显灵活方便。</p>
+<p><strong>3.与delegate的不同</strong></p>
+<p>和delegate一样，KVO和NSNotificaiton的作用都是类于类之间的通信，但是与delegate不同的是：两个都是负责发送接收通知，剩余的事情有系统处理，所以不用返回值；而delegate 则需要通信的对象通过变量（代理）联系。<br>delegate一般是一对一，而这两个可以以对多。</p>
+<p><strong>4.涉及技术</strong></p>
+<p>KVC／KVO实现的根本是 Objective-C的动态性和Runtime，以及访问方法的实现。</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
+          
+            <a href="/tags/笔记/" rel="tag"># 笔记</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/01/06/2018-03-23-iOS开发笔记/" rel="next" title="开发笔记">
+                <i class="fa fa-chevron-left"></i> 开发笔记
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/23/2018-03-23-苹果官方文档阅读入门/" rel="prev" title="苹果官方文档阅读">
+                苹果官方文档阅读 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar_m.jpg" alt="耀敬业">
+            
+              <p class="site-author-name" itemprop="name">耀敬业</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">14</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">10</span>
+                    <span class="site-state-item-name">标签</span>
+                  
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/jinyaoye23" title="GitHub &rarr; https://github.com/jinyaoye23" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://www.jianshu.com/u/4b6290520025" title="简书 &rarr; https://www.jianshu.com/u/4b6290520025" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>简书</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#KVO的实现原理"><span class="nav-number">1.</span> <span class="nav-text">KVO的实现原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-KVO是什么？"><span class="nav-number">1.1.</span> <span class="nav-text">1.KVO是什么？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-实现原理？"><span class="nav-number">1.2.</span> <span class="nav-text">2. 实现原理？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-项目应用"><span class="nav-number">1.3.</span> <span class="nav-text">3.项目应用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-拓展："><span class="nav-number">1.4.</span> <span class="nav-text">4. 拓展：</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">耀敬业</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v6.5.0</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv" title="总访客量">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="site-pv" title="总访问量">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.5.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.5.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.5.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.5.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.5.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+	<script type="text/javascript" color="0,0,255" opacity="0.7" zindex="-2" count="99" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+  
+
+</body>
+</html>
